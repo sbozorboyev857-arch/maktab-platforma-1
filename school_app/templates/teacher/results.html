@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Natijalar{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-header animate-fade-in">
+        <h2>📊 Test natijalari</h2>
+    </div>
+    {% if results %}
+    <div class="results-table animate-slide-up">
+        <table class="data-table">
+            <thead>
+                <tr><th>O'quvchi</th><th>Fan</th><th>Daraja</th><th>Ball</th><th>Foiz</th><th>Sana</th></tr>
+            </thead>
+            <tbody>
+                {% for r in results|reverse %}
+                <tr>
+                    <td>{{ r.student }}</td>
+                    <td>{{ r.subject }}</td>
+                    <td>{{ r.level }}</td>
+                    <td>{{ r.score }}/{{ r.total }}</td>
+                    <td>
+                        <span class="percent-badge {% if r.percentage >= 80 %}percent-good{% elif r.percentage >= 50 %}percent-mid{% else %}percent-bad{% endif %}">
+                            {{ r.percentage }}%
+                        </span>
+                    </td>
+                    <td>{{ r.date }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state animate-slide-up">
+        <span class="empty-icon">📭</span>
+        <p>Hali test natijalari yo'q</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0F0E17">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/static/icons/icon-192.png">
+    <link rel="apple-touch-icon" href="/static/icons/icon-192.png">
+    <title>{% block title %}Maktab Platformasi{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+</head>
+<body>
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="splash-screen">
+        <div class="splash-content">
+            <div class="splash-icon">🎓</div>
+            <div class="splash-title">Maktab Platformasi</div>
+            <div class="splash-loader">
+                <div class="splash-loader-bar"></div>
+            </div>
+            <div class="splash-subtitle">Zamonaviy ta'lim tizimi</div>
+        </div>
+    </div>
+
+    <!-- Offline Banner -->
+    <div id="offline-banner" class="offline-banner" style="display:none;">
+        📡 Internet aloqasi yo'q
+    </div>
+
+    <!-- Install Button -->
+    <div id="install-btn" class="install-btn" style="display:none;">
+        📲 Ilovani o'rnatish
+    </div>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-container">
+        {% for category, message in messages %}
+        <div class="flash-message flash-{{ category }}" onclick="this.style.opacity='0';setTimeout(()=>this.remove(),300)">
+            {% if category == 'success' %}✅{% elif category == 'error' %}❌{% else %}ℹ️{% endif %} {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Bottom Nav (for logged-in users) -->
+    {% if session.get('user') %}
+    <nav class="bottom-nav">
+        {% if session['user']['role'] == 'teacher' %}
+        <a href="/teacher/dashboard" class="nav-item {% if request.path == '/teacher/dashboard' %}active{% endif %}">
+            <span class="nav-icon">🏠</span><span class="nav-label">Bosh</span>
+        </a>
+        <a href="/teacher/students" class="nav-item {% if request.path == '/teacher/students' %}active{% endif %}">
+            <span class="nav-icon">👥</span><span class="nav-label">O'quvchilar</span>
+        </a>
+        <a href="/teacher/schedule" class="nav-item {% if request.path == '/teacher/schedule' %}active{% endif %}">
+            <span class="nav-icon">📅</span><span class="nav-label">Jadval</span>
+        </a>
+        <a href="/teacher/comments" class="nav-item {% if request.path == '/teacher/comments' %}active{% endif %}">
+            <span class="nav-icon">📝</span><span class="nav-label">Izohlar</span>
+        </a>
+        <a href="/logout" class="nav-item">
+            <span class="nav-icon">🚪</span><span class="nav-label">Chiqish</span>
+        </a>
+        {% else %}
+        <a href="/student/dashboard" class="nav-item {% if request.path == '/student/dashboard' %}active{% endif %}">
+            <span class="nav-icon">🏠</span><span class="nav-label">Bosh</span>
+        </a>
+        <a href="/student/schedule" class="nav-item {% if request.path == '/student/schedule' %}active{% endif %}">
+            <span class="nav-icon">📅</span><span class="nav-label">Jadval</span>
+        </a>
+        <a href="/student/test" class="nav-item {% if request.path == '/student/test' %}active{% endif %}">
+            <span class="nav-icon">📝</span><span class="nav-label">Test</span>
+        </a>
+        <a href="/student/comments" class="nav-item {% if request.path == '/student/comments' %}active{% endif %}">
+            <span class="nav-icon">💬</span><span class="nav-label">Izohlar</span>
+        </a>
+        <a href="/logout" class="nav-item">
+            <span class="nav-icon">🚪</span><span class="nav-label">Chiqish</span>
+        </a>
+        {% endif %}
+    </nav>
+    {% endif %}
+
+    <script>
+    // Splash Screen
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            const splash = document.getElementById('splash-screen');
+            splash.classList.add('splash-fade-out');
+            setTimeout(() => splash.style.display = 'none', 600);
+        }, 1800);
+    });
+
+    // Service Worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js');
+    }
+
+    // Offline detection
+    window.addEventListener('offline', () => document.getElementById('offline-banner').style.display = 'block');
+    window.addEventListener('online', () => document.getElementById('offline-banner').style.display = 'none');
+
+    // PWA Install
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        const btn = document.getElementById('install-btn');
+        btn.style.display = 'flex';
+        btn.onclick = () => { deferredPrompt.prompt(); btn.style.display = 'none'; };
+    });
+
+    // Auto-hide flash messages
+    setTimeout(() => {
+        document.querySelectorAll('.flash-message').forEach(m => {
+            m.style.opacity = '0';
+            setTimeout(() => m.remove(), 300);
+        });
+    }, 4000);
+
+    // Schedule export as image
+    function exportScheduleAsImage(elementId) {
+        const el = document.getElementById(elementId);
+        if (!el || typeof html2canvas === 'undefined') {
+            alert('Eksport funksiyasi mavjud emas');
+            return;
+        }
+        html2canvas(el, {backgroundColor: '#1A1932', scale: 2}).then(canvas => {
+            const link = document.createElement('a');
+            link.download = 'dars_jadvali.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        });
+    }
+    </script>
+</body>
+</html>

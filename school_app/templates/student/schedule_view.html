@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Dars jadvali{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-header animate-fade-in">
+        <h2>📅 Dars jadvali</h2>
+        <button onclick="exportScheduleAsImage('student-schedule-table')" class="btn btn-secondary">📷 Rasmga saqlash</button>
+    </div>
+    <div id="student-schedule-table" class="schedule-table-container animate-slide-up">
+        <table class="schedule-excel-table">
+            <thead>
+                <tr>
+                    <th class="corner-cell">📅 Kun / Dars</th>
+                    {% for p in periods %}
+                    <th>{{ p }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for day in days %}
+                <tr>
+                    <td class="day-cell"><strong>{{ day }}</strong></td>
+                    {% for p in periods %}
+                    <td class="subject-cell {% if schedules.get(day, {}).get(p) %}{{ subject_colors.get(schedules[day][p], '') }}{% endif %}">
+                        {% if schedules.get(day, {}).get(p) %}
+                        <div class="cell-content">
+                            <span class="cell-icon">{{ subject_icons.get(schedules[day][p], '') }}</span>
+                            <span class="cell-subject">{{ schedules[day][p] }}</span>
+                        </div>
+                        {% else %}
+                        <span class="empty-cell">—</span>
+                        {% endif %}
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

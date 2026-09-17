@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Qo'llab-quvvatlash{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-header animate-fade-in">
+        <h2>💬 Qo'llab-quvvatlash</h2>
+    </div>
+    <div class="form-card animate-slide-up">
+        <form action="/teacher/support" method="POST">
+            <div class="form-group">
+                <label>Xabar</label>
+                <textarea name="text" rows="3" placeholder="Xabaringizni yozing..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">📤 Yuborish</button>
+        </form>
+    </div>
+    {% if messages %}
+    <div class="messages-list animate-slide-up" style="animation-delay:0.2s">
+        {% for m in messages|reverse %}
+        <div class="message-card {% if m.role == 'teacher' %}msg-teacher{% else %}msg-student{% endif %}">
+            <div class="msg-header">
+                <span>{{ '👨‍🏫' if m.role == 'teacher' else '👤' }} {{ m.author }}</span>
+                <small>{{ m.get('created_at', '')[:16] }}</small>
+            </div>
+            <div class="msg-body">{{ m.text }}</div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

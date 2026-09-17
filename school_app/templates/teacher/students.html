@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}O'quvchilar{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-header animate-fade-in">
+        <h2>👥 O'quvchilar ro'yxati</h2>
+        <a href="/teacher/create-student" class="btn btn-primary">➕ O'quvchi qo'shish</a>
+    </div>
+    {% if students %}
+    <div class="students-table animate-slide-up">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Ism</th>
+                    <th>Login</th>
+                    <th>Sinf</th>
+                    <th>Qo'shilgan sana</th>
+                    <th>Amal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in students %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td><strong>{{ s.name }}</strong></td>
+                    <td><code>{{ s.username }}</code></td>
+                    <td>{{ s.get('class', '-') }}</td>
+                    <td>{{ s.get('created_at', '-')[:10] }}</td>
+                    <td>
+                        <form action="/teacher/student/delete/{{ s.username }}" method="POST" style="display:inline" onsubmit="return confirm('Haqiqatan ham o'chirmoqchimisiz?')">
+                            <button type="submit" class="btn btn-danger btn-sm">🗑 O'chirish</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="students-count animate-fade-in">
+        <span class="badge">Jami: {{ students|length }} o'quvchi</span>
+    </div>
+    {% else %}
+    <div class="empty-state animate-slide-up">
+        <span class="empty-icon">📭</span>
+        <p>Hali o'quvchilar qo'shilmagan</p>
+        <a href="/teacher/create-student" class="btn btn-primary">➕ Birinchi o'quvchini qo'shing</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

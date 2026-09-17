@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Test tanlash{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-header animate-fade-in">
+        <h2>📝 Test topshirish</h2>
+        <p class="text-muted">Fan va darajani tanlang (15 ta savol)</p>
+    </div>
+    <form action="/student/test" method="POST" class="test-form animate-slide-up">
+        <div class="form-group">
+            <label>Fan tanlang</label>
+            <div class="subject-grid">
+                {% for s in subjects %}
+                <label class="subject-option">
+                    <input type="radio" name="subject" value="{{ s }}" required>
+                    <span class="subject-btn">{{ subject_icons.get(s, '') }} {{ s }}</span>
+                </label>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Daraja tanlang</label>
+            <div class="level-grid">
+                <label class="level-option">
+                    <input type="radio" name="level" value="Oson" required>
+                    <span class="level-btn level-easy">🟢 Oson</span>
+                </label>
+                <label class="level-option">
+                    <input type="radio" name="level" value="O'rta">
+                    <span class="level-btn level-medium">🟡 O'rta</span>
+                </label>
+                <label class="level-option">
+                    <input type="radio" name="level" value="Qiyin">
+                    <span class="level-btn level-hard">🔴 Qiyin</span>
+                </label>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">🚀 Testni boshlash</button>
+    </form>
+</div>
+{% endblock %}

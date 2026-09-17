@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}O'qituvchi Paneli{% endblock %}
+{% block content %}
+<div class="dashboard">
+    <div class="dashboard-header animate-fade-in">
+        <div class="welcome-text">
+            <span class="welcome-icon">👨‍🏫</span>
+            <h2>Xush kelibsiz, {{ session.user.name }}!</h2>
+            <p class="text-muted">Bugungi vaqt: {{ now }}</p>
+        </div>
+    </div>
+    <div class="menu-grid">
+        <a href="/teacher/students" class="menu-card animate-pop" style="animation-delay:0.1s">
+            <span class="menu-icon">👥</span>
+            <span class="menu-label">O'quvchilar</span>
+            <span class="menu-desc">Boshqarish</span>
+        </a>
+        <a href="/teacher/create-student" class="menu-card animate-pop" style="animation-delay:0.15s">
+            <span class="menu-icon">➕</span>
+            <span class="menu-label">O'quvchi qo'shish</span>
+            <span class="menu-desc">Yangi hisob</span>
+        </a>
+        <a href="/teacher/schedule" class="menu-card animate-pop" style="animation-delay:0.2s">
+            <span class="menu-icon">📅</span>
+            <span class="menu-label">Dars jadvali</span>
+            <span class="menu-desc">Tuzish</span>
+        </a>
+        <a href="/teacher/attendance" class="menu-card animate-pop" style="animation-delay:0.25s">
+            <span class="menu-icon">✅</span>
+            <span class="menu-label">Davomat</span>
+            <span class="menu-desc">Belgilash</span>
+        </a>
+        <a href="/teacher/my-attendance" class="menu-card animate-pop" style="animation-delay:0.3s">
+            <span class="menu-icon">📋</span>
+            <span class="menu-label">Mening davomatim</span>
+            <span class="menu-desc">Shaxsiy</span>
+        </a>
+        <a href="/teacher/comments" class="menu-card animate-pop" style="animation-delay:0.35s">
+            <span class="menu-icon">📝</span>
+            <span class="menu-label">Izohlar</span>
+            <span class="menu-desc">Boshqarish</span>
+        </a>
+        <a href="/teacher/questions" class="menu-card animate-pop" style="animation-delay:0.4s">
+            <span class="menu-icon">❓</span>
+            <span class="menu-label">Savollar</span>
+            <span class="menu-desc">Qo'shish</span>
+        </a>
+        <a href="/teacher/results" class="menu-card animate-pop" style="animation-delay:0.45s">
+            <span class="menu-icon">📊</span>
+            <span class="menu-label">Natijalar</span>
+            <span class="menu-desc">Ko'rish</span>
+        </a>
+        <a href="/teacher/support" class="menu-card animate-pop" style="animation-delay:0.5s">
+            <span class="menu-icon">💬</span>
+            <span class="menu-label">Qo'llab-quvvatlash</span>
+            <span class="menu-desc">Yordam</span>
+        </a>
+    </div>
+</div>
+{% endblock %}

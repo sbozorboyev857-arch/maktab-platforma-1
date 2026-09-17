@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Test{% endblock %}
+{% block content %}
+<div class="quiz-page">
+    <div class="quiz-header animate-fade-in">
+        <div class="quiz-info">
+            <span class="quiz-subject">{{ subject }}</span>
+            <span class="quiz-level">{{ level }}</span>
+        </div>
+        <div class="quiz-progress">
+            <div class="progress-bar">
+                <div class="progress-fill" style="width:{{ progress }}%"></div>
+            </div>
+            <span class="progress-text">{{ current }} / {{ total }}</span>
+        </div>
+        <div class="quiz-timer" id="quiz-timer">
+            ⏱️ <span id="timer-seconds">{{ timer * 60 }}</span>
+        </div>
+    </div>
+    <div class="quiz-card animate-slide-up">
+        <div class="question-number">Savol {{ current }}</div>
+        <h2 class="question-text">{{ question.q }}</h2>
+        <form action="/student/quiz" method="POST">
+            <div class="form-group">
+                <input type="text" name="answer" placeholder="Javobingizni kiriting..." required autocomplete="off" autofocus>
+            </div>
+            <button type="submit" class="btn btn-primary btn-full">➡️ Keyingi savol</button>
+        </form>
+        <div class="quiz-score">⭐ Hozircha: {{ score }} / {{ current - 1 }}</div>
+    </div>
+</div>
+<script>
+(function() {
+    let seconds = {{ timer * 60 }};
+    const timerEl = document.getElementById('timer-seconds');
+    const interval = setInterval(() => {
+        seconds--;
+        if (seconds <= 0) {
+            clearInterval(interval);
+            window.location.href = '/student/quiz-result';
+        }
+        const m = Math.floor(seconds / 60);
+        const s = seconds % 60;
+        timerEl.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+    }, 1000);
+})();
+</script>
+{% endblock %}

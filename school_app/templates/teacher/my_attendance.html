@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Mening davomatim{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-header animate-fade-in">
+        <h2>📋 Mening davomatim</h2>
+    </div>
+    <div class="form-card animate-slide-up">
+        <form action="/teacher/my-attendance" method="POST">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Sana</label>
+                    <input type="date" name="date" value="{{ records[-1].get('date', '') if records else '' }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Holat</label>
+                    <select name="status">
+                        <option value="present">✅ Keldim</option>
+                        <option value="absent">❌ Kelmadim</option>
+                        <option value="sick">🤒 Kasalman</option>
+                        <option value="vacation">🏖️ Ta'til</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Izoh</label>
+                <input type="text" name="note" placeholder="Qo'shimcha izoh...">
+            </div>
+            <button type="submit" class="btn btn-primary btn-full">💾 Belgilash</button>
+        </form>
+    </div>
+    {% if records %}
+    <div class="records-section animate-slide-up" style="animation-delay:0.2s">
+        <h3>Davomat tarixi</h3>
+        <table class="data-table">
+            <thead><tr><th>Sana</th><th>Holat</th><th>Izoh</th></tr></thead>
+            <tbody>
+                {% for r in records|reverse %}
+                <tr>
+                    <td>{{ r.date }}</td>
+                    <td>
+                        {% if r.status == 'present' %}✅ Keldim
+                        {% elif r.status == 'sick' %}🤒 Kasal
+                        {% elif r.status == 'vacation' %}🏖️ Ta'til
+                        {% else %}❌ Kelmadim{% endif %}
+                    </td>
+                    <td>{{ r.get('note', '-') }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

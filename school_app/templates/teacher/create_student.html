@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}O'quvchi qo'shish{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-header animate-fade-in">
+        <h2>➕ Yangi o'quvchi qo'shish</h2>
+        <a href="/teacher/students" class="btn btn-secondary">← Orqaga</a>
+    </div>
+    <div class="form-card animate-slide-up">
+        <form action="/teacher/create-student" method="POST">
+            <div class="form-group">
+                <label>👤 O'quvchi ismi</label>
+                <input type="text" name="name" placeholder="Masalan: Ahmad Aliyev" required>
+            </div>
+            <div class="form-group">
+                <label>🏷️ Login (kirish uchun)</label>
+                <input type="text" name="username" placeholder="Masalan: ahmad2025" required>
+                <small>O'quvchi shu login bilan tizimga kiradi</small>
+            </div>
+            <div class="form-group">
+                <label>🔒 Parol</label>
+                <input type="text" name="password" placeholder="Masalan: abc123" required>
+                <small>O'quvchiga parolni bering (eslab qolishi uchun oddiy qiling)</small>
+            </div>
+            <div class="form-group">
+                <label>🏫 Sinf</label>
+                <input type="text" name="class" placeholder="Masalan: 9-A">
+            </div>
+            <button type="submit" class="btn btn-primary btn-full">✅ O'quvchini qo'shish</button>
+        </form>
+        <div class="form-hint">
+            <p>💡 <strong>Eslatma:</strong> O'quvchi faqat siz bergan login va parol orqali kirishi mumkin. O'quvchilar o'zlari ro'yxatdan o'tolmaydilar!</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

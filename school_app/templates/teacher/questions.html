@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Savollar qo'shish{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-header animate-fade-in">
+        <h2>❓ Savollar qo'shish</h2>
+    </div>
+    <div class="form-card animate-slide-up">
+        <form action="/teacher/questions" method="POST">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Fan</label>
+                    <select name="subject">
+                        {% for s in subjects %}<option value="{{ s }}">{{ s }}</option>{% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Daraja</label>
+                    <select name="level">
+                        <option value="Oson">🟢 Oson</option>
+                        <option value="O'rta">🟡 O'rta</option>
+                        <option value="Qiyin">🔴 Qiyin</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Savol</label>
+                <input type="text" name="question" placeholder="Savol matni..." required>
+            </div>
+            <div class="form-group">
+                <label>Javob</label>
+                <input type="text" name="answer" placeholder="To'g'ri javob..." required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-full">➕ Savol qo'shish</button>
+        </form>
+    </div>
+    {% if custom %}
+    <div class="custom-questions animate-slide-up" style="animation-delay:0.2s">
+        <h3>Qo'shilgan savollar</h3>
+        {% for subj, levels in custom.items() %}
+        {% for lvl, qs in levels.items() %}
+        <div class="subject-group">
+            <h4>{{ subj }} - {{ lvl }} ({{ qs|length }} ta)</h4>
+            {% for q in qs %}
+            <div class="q-item">{{ q.q }} → <strong>{{ q.a }}</strong></div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

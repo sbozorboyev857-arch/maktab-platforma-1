@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}O'quvchi Paneli{% endblock %}
+{% block content %}
+<div class="dashboard">
+    <div class="dashboard-header animate-fade-in">
+        <div class="welcome-text">
+            <span class="welcome-icon">🎓</span>
+            <h2>Salom, {{ session.user.name }}!</h2>
+            <p class="text-muted">Bugungi vaqt: {{ now }}</p>
+        </div>
+    </div>
+    {% if comments %}
+    <div class="comments-notice animate-pop">
+        <span class="notice-icon">📝</span>
+        <span>Sizga {{ comments|length }} ta yangi izoh bor!</span>
+        <a href="/student/comments" class="btn btn-sm btn-primary">Ko'rish</a>
+    </div>
+    {% endif %}
+    <div class="menu-grid">
+        <a href="/student/test" class="menu-card animate-pop" style="animation-delay:0.1s">
+            <span class="menu-icon">📝</span>
+            <span class="menu-label">Test topshirish</span>
+            <span class="menu-desc">15 ta savol</span>
+        </a>
+        <a href="/student/schedule" class="menu-card animate-pop" style="animation-delay:0.15s">
+            <span class="menu-icon">📅</span>
+            <span class="menu-label">Dars jadvali</span>
+            <span class="menu-desc">Ko'rish</span>
+        </a>
+        <a href="/student/attendance" class="menu-card animate-pop" style="animation-delay:0.2s">
+            <span class="menu-icon">✅</span>
+            <span class="menu-label">Davomatim</span>
+            <span class="menu-desc">Tekshirish</span>
+        </a>
+        <a href="/student/comments" class="menu-card animate-pop" style="animation-delay:0.25s">
+            <span class="menu-icon">💬</span>
+            <span class="menu-label">Izohlar</span>
+            <span class="menu-desc">{{ comments|length }} ta</span>
+        </a>
+        <a href="/student/support" class="menu-card animate-pop" style="animation-delay:0.3s">
+            <span class="menu-icon">💬</span>
+            <span class="menu-label">Qo'llab-quvvatlash</span>
+            <span class="menu-desc">Yordam</span>
+        </a>
+    </div>
+</div>
+{% endblock %}

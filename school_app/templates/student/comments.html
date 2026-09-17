@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Mening izohlarim{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-header animate-fade-in">
+        <h2>📝 Mening izohlarim</h2>
+    </div>
+    {% if comments %}
+    <div class="comments-list animate-slide-up">
+        {% for c in comments|reverse %}
+        <div class="comment-card">
+            <div class="comment-header">
+                <span class="comment-author">✍️ O'qituvchi</span>
+                <span class="comment-date">{{ c.get('created_at', '')[:10] }}</span>
+            </div>
+            <div class="comment-body">{{ c.text }}</div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state animate-slide-up">
+        <span class="empty-icon">📭</span>
+        <p>Hali izohlar yo'q</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

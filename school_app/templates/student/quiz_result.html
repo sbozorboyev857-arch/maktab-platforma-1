@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Test natijasi{% endblock %}
+{% block content %}
+<div class="result-page">
+    <div class="result-card animate-pop">
+        <div class="result-icon">
+            {% if percentage >= 80 %}🏆
+            {% elif percentage >= 60 %}🎉
+            {% elif percentage >= 40 %}👍
+            {% else %}💪{% endif %}
+        </div>
+        <h2>Test yakunlandi!</h2>
+        <div class="result-subject">{{ subject }} - {{ level }}</div>
+        <div class="result-score">
+            <span class="score-big">{{ score }}</span>
+            <span class="score-divider">/</span>
+            <span class="score-total">{{ total }}</span>
+        </div>
+        <div class="result-percentage {% if percentage >= 80 %}percent-good{% elif percentage >= 50 %}percent-mid{% else %}percent-bad{% endif %}">
+            {{ percentage }}%
+        </div>
+        <div class="result-message">
+            {% if percentage >= 80 %}A'lo natija! Tabriklaymiz! 🎉
+            {% elif percentage >= 60 %}Yaxshi natija! Davom eting! 👏
+            {% elif percentage >= 40 %}O'rtacha natija. Qayta urinib ko'ring! 📚
+            {% else %}Ko'proq mashq qilishingiz kerak! 💪{% endif %}
+        </div>
+        <div class="result-actions">
+            <a href="/student/test" class="btn btn-primary">🔄 Qayta test</a>
+            <a href="/student/dashboard" class="btn btn-secondary">🏠 Bosh sahifa</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

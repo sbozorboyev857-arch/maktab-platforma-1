@@ -1,0 +1,22 @@
+{
+  "name": "Maktab Platformasi",
+  "short_name": "Maktab",
+  "description": "Zamonaviy ta'lim tizimi",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0F0E17",
+  "theme_color": "#6C63FF",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/static/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

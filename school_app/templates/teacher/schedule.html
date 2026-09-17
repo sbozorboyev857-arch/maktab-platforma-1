@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Dars jadvali{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-header animate-fade-in">
+        <h2>📅 Dars jadvali</h2>
+        <div class="header-actions">
+            <button onclick="exportScheduleAsImage('schedule-table')" class="btn btn-secondary">📷 Rasmga saqlash</button>
+        </div>
+    </div>
+
+    <!-- Add schedule form -->
+    <div class="form-card animate-slide-up">
+        <h3>Dars qo'shish</h3>
+        <form action="/teacher/schedule" method="POST" class="inline-form">
+            <input type="hidden" name="action" value="add">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Kun</label>
+                    <select name="day">
+                        {% for d in days %}<option value="{{ d }}">{{ d }}</option>{% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Dars soati</label>
+                    <select name="period">
+                        {% for p in periods %}<option value="{{ p }}">{{ p }}</option>{% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Fan</label>
+                    <select name="subject">
+                        {% for s in subjects %}<option value="{{ s }}">{{ subject_icons.get(s, '') }} {{ s }}</option>{% endfor %}
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">➕ Qo'shish</button>
+        </form>
+    </div>
+
+    <!-- Schedule Table (Word/Excel style) -->
+    <div id="schedule-table" class="schedule-table-container animate-slide-up" style="animation-delay:0.2s">
+        <table class="schedule-excel-table">
+            <thead>
+                <tr>
+                    <th class="corner-cell">📅 Kun / Dars</th>
+                    {% for p in periods %}
+                    <th>{{ p }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for day in days %}
+                <tr>
+                    <td class="day-cell"><strong>{{ day }}</strong></td>
+                    {% for p in periods %}
+                    <td class="subject-cell {% if schedules.get(day, {}).get(p) %}{{ subject_colors.get(schedules[day][p], '') }}{% endif %}">
+                        {% if schedules.get(day, {}).get(p) %}
+                        <div class="cell-content">
+                            <span class="cell-icon">{{ subject_icons.get(schedules[day][p], '') }}</span>
+                            <span class="cell-subject">{{ schedules[day][p] }}</span>
+                            <form action="/teacher/schedule" method="POST" class="cell-delete-form" onsubmit="return confirm('O'chirishni xohlaysizmi?')">
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="day" value="{{ day }}">
+                                <input type="hidden" name="period" value="{{ p }}">
+                                <button type="submit" class="cell-delete-btn" title="O'chirish">✕</button>
+                            </form>
+                        </div>
+                        {% else %}
+                        <span class="empty-cell">—</span>
+                        {% endif %}
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

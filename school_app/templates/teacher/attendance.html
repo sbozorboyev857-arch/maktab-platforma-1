@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Davomat{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-header animate-fade-in">
+        <h2>✅ O'quvchilar davomati</h2>
+        <span class="badge">📅 {{ today }}</span>
+    </div>
+    {% if students %}
+    <div class="attendance-grid animate-slide-up">
+        <form action="/teacher/attendance" method="POST">
+            <input type="hidden" name="date" value="{{ today }}">
+            <div class="attendance-list">
+                {% for s in students %}
+                <div class="attendance-row">
+                    <span class="student-name">{{ s.name }} ({{ s.username }})</span>
+                    <div class="attendance-buttons">
+                        <input type="hidden" name="student_username" value="{{ s.username }}">
+                        <label class="att-btn att-present">
+                            <input type="radio" name="status_{{ s.username }}" value="present" checked>
+                            <span>✅ Keldi</span>
+                        </label>
+                        <label class="att-btn att-late">
+                            <input type="radio" name="status_{{ s.username }}" value="late">
+                            <span>⏰ Kech</span>
+                        </label>
+                        <label class="att-btn att-absent">
+                            <input type="radio" name="status_{{ s.username }}" value="absent">
+                            <span>❌ Kelmadi</span>
+                        </label>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <button type="submit" class="btn btn-primary btn-full">💾 Saqlash</button>
+        </form>
+    </div>
+    {% if records %}
+    <div class="records-section animate-slide-up" style="animation-delay:0.2s">
+        <h3>Bugungi yozuvlar</h3>
+        <table class="data-table">
+            <thead><tr><th>O'quvchi</th><th>Holat</th><th>Belgilagan</th></tr></thead>
+            <tbody>
+                {% for r in records %}
+                <tr>
+                    <td>{{ r.student_username }}</td>
+                    <td>
+                        {% if r.status == 'present' %}✅ Keldi
+                        {% elif r.status == 'late' %}⏰ Kech
+                        {% else %}❌ Kelmadi{% endif %}
+                    </td>
+                    <td>{{ r.marked_by }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+    {% else %}
+    <div class="empty-state animate-slide-up">
+        <span class="empty-icon">📭</span>
+        <p>Avval o'quvchilar qo'shing</p>
+        <a href="/teacher/create-student" class="btn btn-primary">➕ O'quvchi qo'shish</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Mening davomatim{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-header animate-fade-in">
+        <h2>✅ Mening davomatim</h2>
+    </div>
+    {% if records %}
+    <div class="records-section animate-slide-up">
+        <table class="data-table">
+            <thead><tr><th>Sana</th><th>Holat</th><th>Belgilagan</th></tr></thead>
+            <tbody>
+                {% for r in records|reverse %}
+                <tr>
+                    <td>{{ r.date }}</td>
+                    <td>
+                        {% if r.status == 'present' %}✅ Keldi
+                        {% elif r.status == 'late' %}⏰ Kech
+                        {% else %}❌ Kelmadi{% endif %}
+                    </td>
+                    <td>{{ r.marked_by }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state animate-slide-up">
+        <span class="empty-icon">📭</span>
+        <p>Davomat yozuvlari mavjud emas</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
